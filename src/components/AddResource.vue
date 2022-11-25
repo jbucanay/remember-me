@@ -1,4 +1,18 @@
 <template>
+    <Teleport to="body">
+     <v-snackbar v-model="showSnack" color="white">
+    <p :class="getColor">{{ message }}</p>
+    <template v-slot:actions>
+          <v-btn
+            color="red"
+            variant="text"
+            @click="showSnack = false"
+          >
+            Close
+          </v-btn>
+        </template>
+   </v-snackbar>
+</Teleport>
 <base-card>
 <template #addResource>
 <v-card-text>
@@ -27,9 +41,10 @@
 <script>
 import BaseCard from './BaseCard.vue';
 
+
     export default {
   components: { 
-    BaseCard 
+    BaseCard,
     },
     inject: ['data', 'changeComponent'],
     data() {
@@ -37,19 +52,34 @@ import BaseCard from './BaseCard.vue';
             title: '',
             description: '',
             link: '',
-            showSnack: false
+            showSnack: false,
+            message: ''
         }
     },
     methods: {
         submitForm(){
-            const inputVals = {
+            if(this.title !== '' || this.description !== '' || this.link !== ''){
+                const inputVals = {
                 title: this.title,
                 description: this.description,
                 link:this.link,
                 id: Date.now()
+                }
+
+                this.data.push(inputVals)
+                this.showSnack = true;
+                this.message = 'Submited form successfully!'
+                this.changeComponent('stored-resource');
+
+            } else {
+                this.message = 'Failed to submit form!'
+                this.showSnack = true;
             }
-            this.data.push(inputVals)
-            this.changeComponent('stored-resource')
+        }
+    },
+    computed: {
+        getColor(){
+            return this.message == 'Failed to submit form!' ? 'text-red' : 'text-green'
         }
     }
     }
