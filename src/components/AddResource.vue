@@ -66,7 +66,7 @@ import BaseCard from './BaseCard.vue';
                 id: Date.now()
                 }
 
-                this.data.push(inputVals)
+                this.data.unshift(inputVals)
                 this.showSnack = true;
                 this.message = 'Submited form successfully!'
                 this.changeComponent('stored-resource');

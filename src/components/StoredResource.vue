@@ -13,7 +13,7 @@
             </v-card-subtitle>
     </div>
     <div>
-            <v-btn variant="text" class="text-purple capitalize">Delete</v-btn>
+            <v-btn variant="text" class="text-purple capitalize" @click="deleteMe(item.id)">Delete</v-btn>
     </div>
  </template>
  </base-card>
@@ -26,6 +26,12 @@ import BaseCard from './BaseCard.vue';
         BaseCard
     },
     inject: ['data'],
+    methods: {
+        deleteMe(id){
+            const found = this.data.findIndex(item => item.id === id)
+            this.data.splice(found,1)
+        }
+    }
     
     }
 </script>
